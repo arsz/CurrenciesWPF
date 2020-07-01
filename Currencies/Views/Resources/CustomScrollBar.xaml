@@ -1,0 +1,310 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
+    xmlns:options="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:Double x:Key="InactiveSizeOfScrollBar">4</sys:Double>
+    <sys:Double x:Key="ActiveSizeOfScrollBar">12</sys:Double>
+
+    <SolidColorBrush
+        x:Key="ListScrollBarDarkBackgroundBrush"
+        options:Freeze="True"
+        Opacity="0.1"
+        Color="White" />
+
+    <Style x:Key="ArrowDarkButton" TargetType="{x:Type Button}">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Panel.ZIndex" Value="1" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Width" Value="{StaticResource ActiveSizeOfScrollBar}" />
+        <Setter Property="Height" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="ArrowFrame" Background="{TemplateBinding Background}">
+                        <Path
+                            x:Name="Arrow"
+                            Width="8"
+                            Height="5"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            Fill="White"
+                            Stretch="Fill"
+                            Tag="{TemplateBinding Command}">
+                            <Path.Style>
+                                <Style TargetType="Path">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Tag.Name, RelativeSource={RelativeSource Self}}" Value="PageDown">
+                                            <Setter Property="Data" Value="M4 5.39844L7.57422 1.82422L7.92578 2.17578L4 6.10156L0.0742188 2.17578L0.425781 1.82422L4 5.39844Z" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Tag.Name, RelativeSource={RelativeSource Self}}" Value="PageUp">
+                                            <Setter Property="Data" Value="M7.63672 6.32153L4 2.68872L0.36328 6.32153L0.0117176 5.96997L4 1.97778L7.98828 5.96997L7.63672 6.32153Z" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Path.Style>
+                        </Path>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            BeginTime="0"
+                                            Storyboard.TargetName="ArrowFrame"
+                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Opacity)"
+                                            To="0.2"
+                                            Duration="0:0:0.1" />
+                                        <ColorAnimation
+                                            BeginTime="0"
+                                            Storyboard.TargetName="ArrowFrame"
+                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                            To="White"
+                                            Duration="0:0:0.1" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            BeginTime="0"
+                                            Storyboard.TargetName="ArrowFrame"
+                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Opacity)"
+                                            To="0.4"
+                                            Duration="0:0:0.1" />
+                                        <ColorAnimation
+                                            BeginTime="0"
+                                            Storyboard.TargetName="ArrowFrame"
+                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                            To="White"
+                                            Duration="0:0:0.1" />
+                                        <ColorAnimation
+                                            BeginTime="0"
+                                            Storyboard.TargetName="Arrow"
+                                            Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)"
+                                            To="Black"
+                                            Duration="0:0:0.1" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Normal">
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            BeginTime="0"
+                                            Storyboard.TargetName="ArrowFrame"
+                                            Storyboard.TargetProperty="(Border.Opacity)"
+                                            To="1"
+                                            Duration="0:0:0.1" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding ActualWidth, ElementName=GridRoot}" Value="{StaticResource InactiveSizeOfScrollBar}">
+                <Setter Property="Visibility" Value="Hidden" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding ActualWidth, ElementName=GridRoot}" Value="{StaticResource ActiveSizeOfScrollBar}">
+                <Setter Property="Visibility" Value="Visible" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="CustomDarkScrollBar" TargetType="{x:Type ScrollBar}">
+        <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ScrollBar}">
+                    <Grid
+                        x:Name="FrameGrid"
+                        HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                        VerticalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid
+                            x:Name="BackgroundFrame"
+                            Grid.RowSpan="3"
+                            Width="{Binding ActualWidth, ElementName=GridRoot}"
+                            Background="{StaticResource ListScrollBarDarkBackgroundBrush}"
+                            Opacity="0" />
+                        <Button
+                            x:Name="UpButton"
+                            Command="ScrollBar.PageUpCommand"
+                            Style="{StaticResource ArrowDarkButton}" />
+                        <Grid
+                            x:Name="GridRoot"
+                            Grid.Row="1"
+                            Width="{StaticResource InactiveSizeOfScrollBar}"
+                            Height="Auto"
+                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
+                            <Track
+                                x:Name="PART_Track"
+                                Focusable="false"
+                                IsDirectionReversed="true">
+                                <Track.Thumb>
+                                    <Thumb x:Name="Thumb">
+                                        <Thumb.Style>
+                                            <Style TargetType="Thumb">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ActualWidth, RelativeSource={RelativeSource Self}}" Value="{StaticResource ActiveSizeOfScrollBar}">
+                                                        <Setter Property="Opacity" Value="0.6" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding ActualWidth, RelativeSource={RelativeSource Self}}" Value="{StaticResource InactiveSizeOfScrollBar}">
+                                                        <Setter Property="Opacity" Value="0.7" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type Thumb}">
+                                                            <Border
+                                                                x:Name="border"
+                                                                HorizontalAlignment="Stretch"
+                                                                VerticalAlignment="Stretch"
+                                                                Background="White"
+                                                                Opacity="{TemplateBinding Opacity}">
+                                                                <Border.Effect>
+                                                                    <DropShadowEffect
+                                                                        BlurRadius="1"
+                                                                        Opacity="0.1"
+                                                                        ShadowDepth="1"
+                                                                        Color="White" />
+                                                                </Border.Effect>
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </Thumb.Style>
+                                    </Thumb>
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton
+                                        x:Name="PageUp"
+                                        Command="ScrollBar.PageDownCommand"
+                                        Focusable="false"
+                                        Opacity="0" />
+                                </Track.IncreaseRepeatButton>
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton
+                                        x:Name="PageDown"
+                                        Command="ScrollBar.PageUpCommand"
+                                        Focusable="false"
+                                        Opacity="0" />
+                                </Track.DecreaseRepeatButton>
+                            </Track>
+                        </Grid>
+
+                        <Button
+                            x:Name="DownButton"
+                            Grid.Row="2"
+                            Command="ScrollBar.PageDownCommand"
+                            Style="{StaticResource ArrowDarkButton}" />
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter" SourceName="FrameGrid">
+                            <BeginStoryboard x:Name="MouseEnterBeginStoryboard">
+                                <Storyboard>
+                                    <DoubleAnimation
+                                        BeginTime="0:0:0.1"
+                                        Storyboard.TargetName="GridRoot"
+                                        Storyboard.TargetProperty="Width"
+                                        From="{StaticResource InactiveSizeOfScrollBar}"
+                                        To="{StaticResource ActiveSizeOfScrollBar}"
+                                        Duration="0:0:0.1" />
+                                    <DoubleAnimation
+                                        BeginTime="0:0:0.1"
+                                        Storyboard.TargetName="BackgroundFrame"
+                                        Storyboard.TargetProperty="Opacity"
+                                        From="0"
+                                        To="0.9"
+                                        Duration="0:0:0.1" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <SeekStoryboard
+                                BeginStoryboardName="MouseEnterBeginStoryboard"
+                                Origin="BeginTime"
+                                Offset="0:0:3" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseLeave" SourceName="FrameGrid">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation
+                                        BeginTime="0:0:2"
+                                        Storyboard.TargetName="GridRoot"
+                                        Storyboard.TargetProperty="Width"
+                                        From="{StaticResource ActiveSizeOfScrollBar}"
+                                        To="{StaticResource InactiveSizeOfScrollBar}"
+                                        Duration="0:0:0.1" />
+                                    <DoubleAnimation
+                                        BeginTime="0:0:2"
+                                        Storyboard.TargetName="BackgroundFrame"
+                                        Storyboard.TargetProperty="Opacity"
+                                        From="0.9"
+                                        To="0"
+                                        Duration="0:0:0.1" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <Trigger SourceName="Thumb" Property="IsDragging" Value="true">
+                            <Setter TargetName="Thumb" Property="Opacity" Value="0.8" />
+                        </Trigger>
+                        <Trigger Property="Orientation" Value="Horizontal">
+                            <Setter TargetName="FrameGrid" Property="LayoutTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="-90" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="PART_Track" Property="LayoutTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="-90" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Width" Value="Auto" />
+                            <Setter TargetName="PageDown" Property="Command" Value="ScrollBar.PageLeftCommand" />
+                            <Setter TargetName="PageUp" Property="Command" Value="ScrollBar.PageRightCommand" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  ScrollViewer  -->
+    <ControlTemplate x:Key="DarkScrollViewTemplate" TargetType="{x:Type ScrollViewer}">
+        <Border BorderThickness="0">
+            <Grid Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <ScrollContentPresenter
+                    Name="PART_ScrollContentPresenter"
+                    Margin="{TemplateBinding Padding}"
+                    CanContentScroll="{TemplateBinding CanContentScroll}"
+                    CanHorizontallyScroll="False"
+                    CanVerticallyScroll="True"
+                    KeyboardNavigation.DirectionalNavigation="Local"
+                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+
+                <ScrollBar
+                    Name="PART_VerticalScrollBar"
+                    Grid.Column="1"
+                    Maximum="{TemplateBinding ScrollableHeight}"
+                    Style="{DynamicResource CustomDarkScrollBar}"
+                    ViewportSize="{TemplateBinding ViewportHeight}"
+                    Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                    Value="{TemplateBinding VerticalOffset}" />
+            </Grid>
+        </Border>
+    </ControlTemplate>
+
+</ResourceDictionary>

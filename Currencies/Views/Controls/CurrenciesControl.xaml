@@ -1,0 +1,146 @@
+﻿<UserControl
+    x:Class="Currencies.Views.Controls.CurrenciesControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Border x:Name="MainBorder">
+        <ScrollViewer Template="{StaticResource DarkScrollViewTemplate}">
+            <ItemsControl ItemsSource="{Binding Currencies}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            x:Name="inner"
+                            Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
+                            Height="124"
+                            Margin="12"
+                            Padding="12"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Background="{StaticResource FortyPercentageWhite}"
+                            BorderBrush="{StaticResource TwentyPercentageWhite}"
+                            BorderThickness="1"
+                            Focusable="True">
+                            <Border.RenderTransform>
+                                <ScaleTransform x:Name="scale" CenterX="62" CenterY="62" ScaleX="1" ScaleY="1" />
+                            </Border.RenderTransform>
+                            <Grid>
+                                <Button
+                                    Margin="0,-40,-40,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding DataContext.DeleteCurrency, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding .}"
+                                    Content="&#xe21e;">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+
+                                            <TextBlock
+                                                x:Name="textx"
+                                                Margin="0,0,0,0"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                FontSize="40"
+                                                Foreground="Red"
+                                                Style="{StaticResource CommonSymbolStyle}"
+                                                Text="{TemplateBinding Content}" />
+
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="textx" Property="Foreground" Value="Pink" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+
+
+                                <StackPanel
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Stretch"
+                                    Background="Transparent"
+                                    Orientation="Vertical">
+                                    <TextBlock
+                                        Margin="5,0"
+                                        HorizontalAlignment="Center"
+                                        DockPanel.Dock="Top"
+                                        Style="{StaticResource CommonTextBlockStyle}"
+                                        Text="{Binding Rate}" />
+
+                                    <ComboBox
+                                        x:Name="box"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        IsDropDownOpen="True"
+                                        ItemsSource="{Binding Currencies}"
+                                        SelectedItem="{Binding SelectedCurrency}"
+                                        Style="{StaticResource CurrencySelectorComboBox}" />
+
+                                    <Viewbox StretchDirection="DownOnly">
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            DockPanel.Dock="Bottom"
+                                            Style="{StaticResource CommonTextBlockStyle}"
+                                            Text="{Binding ConvertedValue}" />
+                                    </Viewbox>
+
+                                </StackPanel>
+                            </Grid>
+                            <Border.Triggers>
+
+                                <EventTrigger RoutedEvent="MouseEnter">
+                                    <EventTrigger.Actions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                                    AutoReverse="False"
+                                                    Storyboard.TargetName="scale"
+                                                    Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
+                                                    To="1.1"
+                                                    Duration="0:0:0.25" />
+                                                <DoubleAnimation
+                                                    AutoReverse="False"
+                                                    Storyboard.TargetName="scale"
+                                                    Storyboard.TargetProperty="(ScaleTransform.ScaleY)"
+                                                    To="1.1"
+                                                    Duration="0:0:0.25" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger.Actions>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="MouseLeave">
+                                    <EventTrigger.Actions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                                    AutoReverse="False"
+                                                    Storyboard.TargetName="scale"
+                                                    Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
+                                                    To="1"
+                                                    Duration="0:0:0.25" />
+                                                <DoubleAnimation
+                                                    AutoReverse="False"
+                                                    Storyboard.TargetName="scale"
+                                                    Storyboard.TargetProperty="(ScaleTransform.ScaleY)"
+                                                    To="1"
+                                                    Duration="0:0:0.25" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger.Actions>
+                                </EventTrigger>
+                            </Border.Triggers>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Border>
+</UserControl>

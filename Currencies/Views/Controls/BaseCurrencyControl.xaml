@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="Currencies.Views.Controls.BaseCurrencyControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Currencies.Views.Controls"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <CheckBox IsChecked="{Binding IsDollarBaseCurrencySelected}" Margin="0,0,12,0">
+        <CheckBox.Template>
+            <ControlTemplate>
+                <Grid VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="dollar" Style="{StaticResource CommonSymbolStyle}" FontSize="24" Text="&#x24;" Padding="8" />
+                    <TextBlock x:Name="euro" Grid.Column="1" Style="{StaticResource CommonSymbolStyle}" FontSize="24" Padding="8" Text="&#x20AC;" />
+                </Grid>
+                <ControlTemplate.Triggers>
+                    <DataTrigger Binding="{Binding IsDollarBaseCurrencySelected}" Value="True">
+                        <Setter TargetName="euro" Property="Foreground" Value="{StaticResource FortyPercentageWhite}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsDollarBaseCurrencySelected}" Value="False">
+                        <Setter TargetName="dollar" Property="Foreground" Value="{StaticResource FortyPercentageWhite}" />
+                    </DataTrigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+        </CheckBox.Template>
+    </CheckBox>
+</UserControl>
