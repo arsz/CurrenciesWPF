@@ -21,7 +21,7 @@ namespace Currencies.Services
 
             using (StreamWriter writer = File.CreateText(Path))
             {
-               await writer.WriteAsync(json);
+               await writer.WriteAsync(json).ConfigureAwait(false);
             }
         }
 
@@ -33,7 +33,7 @@ namespace Currencies.Services
 
             using (StreamReader reader = new StreamReader(Path))
             {
-                json = await reader.ReadToEndAsync();
+                json = await reader.ReadToEndAsync().ConfigureAwait(false);
             }
 
             return JsonConvert.DeserializeObject<StorageModel>(json);

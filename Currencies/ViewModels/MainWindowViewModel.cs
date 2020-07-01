@@ -108,7 +108,7 @@ namespace Currencies.ViewModels
 
         public async Task LoadSavedFile()
         {
-            var loadedDatas = await storageService.LoadSavedSettings();
+            var loadedDatas = await storageService.LoadSavedSettings().ConfigureAwait(false);
 
             if (loadedDatas.InvalidStorageData) return;
 
