@@ -1,2 +1,2 @@
 # CurrenciesWPF
-![](<converting.PNG>)
+![](<converting.gif>)
